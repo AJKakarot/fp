@@ -1,1 +1,11 @@
 .env
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+db.sqlite3
+staticfiles/
+media/
+*.log
+.env.local
+.env.*.local

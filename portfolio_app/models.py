@@ -1,7 +1,22 @@
+from django.conf import settings
 from django.db import models
 
 
-class BeginnerProject(models.Model):
+class ProjectMixin:
+    """Mixin providing image_url and project_url used by templates."""
+
+    @property
+    def image_url(self):
+        if self.images:
+            return self.images.url
+        return f"{settings.STATIC_URL}head.jpg"
+
+    @property
+    def project_url(self):
+        return self.urls or "#"
+
+
+class BeginnerProject(ProjectMixin, models.Model):
     images = models.ImageField(upload_to='projects/beginner/')
     urls = models.URLField(max_length=255, blank=True)
     title = models.CharField(max_length=150)
@@ -11,7 +26,7 @@ class BeginnerProject(models.Model):
         return self.title
 
 
-class IntermediateProject(models.Model):
+class IntermediateProject(ProjectMixin, models.Model):
     images = models.ImageField(upload_to='projects/intermediate/')
     urls = models.URLField(max_length=255, blank=True)
     title = models.CharField(max_length=150)
@@ -21,7 +36,7 @@ class IntermediateProject(models.Model):
         return self.title
 
 
-class AdvancedProject(models.Model):
+class AdvancedProject(ProjectMixin, models.Model):
     images = models.ImageField(upload_to='projects/advanced/')
     urls = models.URLField(max_length=255, blank=True)
     title = models.CharField(max_length=150)
