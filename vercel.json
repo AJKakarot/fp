@@ -1,4 +1,6 @@
 {
+  "installCommand": "pip3 install -r requirements.txt",
+  "buildCommand": "python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput",
   "routes": [
     {
       "src": "/(.*)",

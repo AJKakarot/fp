@@ -1,6 +1,6 @@
 # Deploy Django Portfolio on Vercel
 
-**No external database required** – Projects are hardcoded in `portfolio_app/projects_data.py`
+**Zero config** – No database, no env vars needed. Just import and deploy.
 
 ## Prerequisites
 
@@ -26,19 +26,16 @@ git push -u origin main
 1. Go to [vercel.com/new](https://vercel.com/new)
 2. **Import** your GitHub repository
 3. **Root Directory:** Set to `Portfolio` (if the repo has other folders) or leave blank if Portfolio is the root
-4. **Build Command:**
-   ```bash
-   pip install -r requirements.txt && python manage.py migrate --noinput && python manage.py collectstatic --noinput
-   ```
-5. **Install Command:** `pip install -r requirements.txt`
+4. **Don't override** Build/Install Command – `vercel.json` already configures them with `pip3`/`python3`
+5. If build fails with "command not found", clear any custom Build Command in Settings and redeploy
 
-### Environment variables (optional)
+### Environment variables (optional – none required)
 
 | Variable | Value | Notes |
 |----------|-------|-------|
-| `SECRET_KEY` | Random string | Recommended for production |
-| `DEBUG` | `False` | Recommended for production |
-| `EMAIL_HOST_PASSWORD` | Gmail app password | Needed for contact form to send email |
+| `SECRET_KEY` | Random string | Optional – has default |
+| `DEBUG` | `False` | Optional – defaults to True |
+| `EMAIL_HOST_PASSWORD` | Gmail app password | Optional – without it, contact messages go to Vercel logs |
 
 ### Option B: Deploy via Vercel CLI
 
