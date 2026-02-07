@@ -26,8 +26,17 @@ git push -u origin main
 1. Go to [vercel.com/new](https://vercel.com/new)
 2. **Import** your GitHub repository
 3. **Root Directory:** Set to `Portfolio` (if the repo has other folders) or leave blank if Portfolio is the root
-4. **Don't override** Build/Install Command – `vercel.json` already configures them with `pip3`/`python3`
-5. If build fails with "command not found", clear any custom Build Command in Settings and redeploy
+4. **Clear overrides** in Settings → Build & Development Settings:
+   - Turn OFF any override for Install Command or Build Command
+   - Let `vercel.json` handle everything
+5. Click **Deploy**
+
+### Vercel build config (in vercel.json)
+
+| Step | Command |
+|------|---------|
+| **Install** | `pip install -r requirements.txt --break-system-packages` |
+| **Build** | `python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput` |
 
 ### Environment variables (optional – none required)
 
@@ -43,7 +52,6 @@ git push -u origin main
 npm i -g vercel
 cd Portfolio
 vercel
-# Follow prompts, add env vars
 vercel --prod
 ```
 
@@ -51,14 +59,12 @@ vercel --prod
 
 Edit `portfolio_app/projects_data.py` and add/update entries in `BEGINNER_PROJECTS`, `INTERMEDIATE_PROJECTS`, and `ADVANCED_PROJECTS` lists. Redeploy to see changes.
 
-## Important notes
-
-1. **No database:** Projects are hardcoded. SQLite is used only for Django's internal tables (created during build).
-2. **Static files:** Whitenoise is configured. `collectstatic` runs during build.
-3. **Contact form:** Requires `EMAIL_HOST_PASSWORD` env var for Gmail.
-4. **Cold starts:** Serverless functions may have 1–3 second cold starts on first request.
-
 ## Troubleshooting
 
-- **500 errors:** Check Vercel function logs in the dashboard
-- **Static files 404:** Ensure `collectstatic` runs in the build command
+| Error | Fix |
+|-------|-----|
+| `externally-managed-environment` | Already handled – we use `--break-system-packages` |
+| `command not found` (pip/python) | Clear Install/Build Command overrides in Vercel Settings |
+| `uv pip install` exited 1 | Removed – we use pip with `--break-system-packages` |
+| 500 errors | Check Vercel function logs in the dashboard |
+| Static files 404 | Ensure `collectstatic` runs in build (it does) |
